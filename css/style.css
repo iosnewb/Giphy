@@ -2,3 +2,12 @@ h1 {
 	text-align: center;
 	color: red;
 }
+
+#gif-container {
+	margin-top: 25px;
+	display: inline-block;
+}
+
+.col-md-4 {
+	margin-top: 5px;
+}
