@@ -56,8 +56,7 @@ $(document).on("click", ".get-gif", function() {
 		gifImg.attr("data-animate", animateURL);				//creates a data attr to store animated url
 		gifImg.attr("data-still", stillURL);					//creates a data attr to store still 	url
 		gifImg.addClass("theGif col-md-4");
-		$("#gif-container").append(gifImg);						//appends the final div to the gif-container
-
+		$("#gif-container").append(gifImg, r);						//appends the final div to the gif-container
 		}
 
 	}).fail(function(err){										//catches an error if the api call fails
