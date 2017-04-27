@@ -8,65 +8,64 @@ var limit = "&limit=20"
 var apiKey = "&api_key=dc6zaTOxFJmzC";
 
 
+// this function creates the intial buttons
 function renderGifs() {
 
 	$("#gif-btns").empty();
 
 	for(var i = 0; i < topics.length; i++){
-		var a = $("<button>");
-		a.addClass('btn btn-default get-gif');
-		a.attr("gif-buttons", topics[i]);
-		a.text(topics[i]);
-		$("#gif-btns").append(a);
+		var a = $("<button>"); 					//creates a button for each loop
+		a.addClass('btn btn-default get-gif'); 	//adds a class to the button
+		a.attr("gif-buttons", topics[i]); 		//creates an attribute with a value from each array
+		a.text(topics[i]); 						//displays text of array on the button
+		$("#gif-btns").append(a); 				//appends the buttons onto the gif-btns id
 	}
 }
 
+// this event extracts user input from the text form to create a new gif button
 $(".add-gif").on("click", function(event) {
 	event.preventDefault();
 
-	var topic = $("#giphy-input").val().trim();
-	console.log(topic);
-
-	topics.push(topic);
-	console.log(topics);
-
-	renderGifs();
+	var topic = $("#giphy-input").val().trim(); //extracts the value from the user
+	topics.push(topic);							//pushes new value into the topics array
+	renderGifs();								//calling this function so that it recreates all the buttons
 });
 
 
+// this event performs the ajax call to receive the json request from giphy
 $(document).on("click", ".get-gif", function() {
 	$("#gif-container").empty();
 
-	var gif = $(this).attr("gif-buttons");
+	var gif = $(this).attr("gif-buttons");					//this code extracts the value from the attribute
 
-	$.ajax({
+	$.ajax({												//ajax call to giphy with queryURL and api key			
 		url: queryURL+gif+apiKey+limit,
 		method: 'GET'
 	}).done(function(json) {
 
-		for(var i = 0; i < json.data.length; i++){
+		for(var i = 0; i < json.data.length; i++){			//for loop to loop over all the objects returned from giphy
 
-		var gifImage = $("<div>");
+		var gifImage = $("<div>");							//creates a div with the class theGif
 		gifImage.addClass("col-md-4 theGif");
 
-		var rating = json.data[i].rating;
-		var r = $("<p>").text("Rated: " +rating);
+		var rating = json.data[i].rating;					//extracts the rating value from the json object		
+		var r = $("<p>").text("Rated: " +rating);			//creates a p element to store and display the rating
 		gifImage.append(r);
 		$("#gif-container").append(gifImage);
 
-		var stillURL = json.data[i].images.fixed_height_still.url;
-		var animateURL = json.data[i].images.fixed_height.url;
+		var stillURL = json.data[i].images.fixed_height_still.url;  //assign the still gif to a variable
+		var animateURL = json.data[i].images.fixed_height.url;		//assign the animated gif to a variable
 
-		var gifImg = $("<img>").attr("src", animateURL);
-		gifImg.attr("data-state", "still");
-		gifImg.attr("data-animate", animateURL);
-		gifImg.attr("data-still", stillURL);
-		gifImage.append(gifImg);
-		$("#gif-container").append(gifImage);
+		var gifImg = $("<img>").attr("src", animateURL);  	//creates an image element to store the animated url
+		gifImg.attr("data-state", "still");					//creates an attr to store the value 'still'
+		gifImg.attr("data-animate", animateURL);			//creates a data attr to store animated url
+		gifImg.attr("data-still", stillURL);				//creates a data attr to store still 	url
+		gifImage.append(gifImg);							//appends the gif to the gifImage div
+		$("#gif-container").append(gifImage);				//appends the final div to the gif-container
 
 		}
 
-	}).fail(function(err){
+	}).fail(function(err){									//catches an error if the api call fails
 		console.log(err);
 		console.log("System failed to retrieve the requested API");
 	});
@@ -74,8 +73,8 @@ $(document).on("click", ".get-gif", function() {
 });
 
 
-$(document).on("click", ".theGif", function() {
-	var state = $(this).attr("data-still");
+$(document).on("click", ".theGif", function() {				//event to access data attributes and control gif status
+	var state = $(this).attr("img data-state");
 	console.log(state);
 
 })
