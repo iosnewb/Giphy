@@ -29,6 +29,7 @@ $(".add-gif").on("click", function(event) {
 	var topic = $("#giphy-input").val().trim(); 				//extracts the value from the user
 	topics.push(topic);											//pushes new value into the topics array
 	renderGifs();												//calling this function so that it recreates all the buttons
+	$(".form-control").val("");
 });
 
 
@@ -56,7 +57,7 @@ $(document).on("click", ".get-gif", function() {
 		gifImg.attr("data-animate", animateURL);				//creates a data attr to store animated url
 		gifImg.attr("data-still", stillURL);					//creates a data attr to store still 	url
 		gifImg.addClass("theGif col-md-4");
-		$("#gif-container").append(gifImg, r);						//appends the final div to the gif-container
+		$("#gif-container").append(gifImg);						//appends the final div to the gif-container
 		}
 
 	}).fail(function(err){										//catches an error if the api call fails
